@@ -1,17 +1,32 @@
 import Link from "next/link";
 import type { Tag } from "@/lib/supabase/types";
 
-export function ChipRow({ tags, activeTag }: { tags: Tag[]; activeTag?: string }) {
+/**
+ * Sub-filter chips scoped to a single تعلم section (عنك / تربيتك). `tags`
+ * should already be pre-filtered to that section's category — this row just
+ * renders "الكل" (reset to the section, no tag) plus one chip per tag.
+ */
+export function ChipRow({
+  tags,
+  activeTag,
+  section,
+  accent,
+}: {
+  tags: Tag[];
+  activeTag?: string;
+  section: string;
+  accent?: boolean;
+}) {
   return (
     <div className="mb-1.5 flex gap-2 overflow-x-auto pb-3.5">
-      <Chip href="/" label="الكل" active={!activeTag} />
+      <Chip href={`/?section=${section}`} label="الكل" active={!activeTag} accent={accent} />
       {tags.map((tag) => (
         <Chip
           key={tag.slug}
-          href={`/?tag=${tag.slug}`}
-          label={tag.category === "about_her" ? `✦ ${tag.label_ar}` : tag.label_ar}
+          href={`/?section=${section}&tag=${tag.slug}`}
+          label={tag.label_ar}
           active={activeTag === tag.slug}
-          self={tag.category === "about_her"}
+          accent={accent}
         />
       ))}
     </div>
@@ -22,23 +37,19 @@ function Chip({
   href,
   label,
   active,
-  self,
+  accent,
 }: {
   href: string;
   label: string;
   active: boolean;
-  self?: boolean;
+  accent?: boolean;
 }) {
   const base = "flex-none whitespace-nowrap rounded-full border px-3.5 py-1.5 text-[12.5px] font-medium";
   if (active) {
     return (
       <Link
         href={href}
-        className={`${base} ${
-          self
-            ? "border-gold bg-gold text-ink"
-            : "border-ink bg-ink text-white"
-        }`}
+        className={`${base} ${accent ? "border-gold bg-gold text-ink" : "border-ink bg-ink text-white"}`}
       >
         {label}
       </Link>
@@ -47,9 +58,7 @@ function Chip({
   return (
     <Link
       href={href}
-      className={`${base} border-line bg-white ${
-        self ? "border-gold text-[#8B4A36]" : "text-ink-soft"
-      }`}
+      className={`${base} bg-white ${accent ? "border-gold text-[#8B4A36]" : "border-line text-ink-soft"}`}
     >
       {label}
     </Link>

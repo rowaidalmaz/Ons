@@ -1,7 +1,8 @@
 import { createClient } from "@/lib/supabase/server";
 import { ChipRow } from "@/components/ui/ChipRow";
+import { SectionTabs } from "@/components/ui/SectionTabs";
 import { ContentCard } from "@/components/ui/ContentCard";
-import type { ContentFormat, Tag } from "@/lib/supabase/types";
+import type { ContentFormat, Tag, TagCategory } from "@/lib/supabase/types";
 
 type ContentRow = {
   id: string;
@@ -14,31 +15,45 @@ type ContentRow = {
   channels: { name: string } | null;
 };
 
+const SECTION_CATEGORY: Record<string, TagCategory> = {
+  about: "about_her",
+  parenting: "age_stage",
+};
+
+const SECTION_SUBTITLE: Record<string, string> = {
+  about: "مو بس عن طفلك — هذا القسم عنكِ أنتِ: هويتك، علاقتك، شغلك، وجسمك 💛",
+  parenting: "محتوى عن طفلك حسب مرحلته العمرية، من الولادة إلى المراهقة.",
+};
+
 export default async function LearnPage({
   searchParams,
 }: {
-  searchParams: Promise<{ tag?: string }>;
+  searchParams: Promise<{ section?: string; tag?: string }>;
 }) {
-  const { tag } = await searchParams;
+  const params = await searchParams;
+  const tag = params.tag;
+  const section = params.section === "parenting" ? "parenting" : "about";
+  const category = SECTION_CATEGORY[section];
+
   const supabase = await createClient();
 
-  const { data: tags } = await supabase
+  const { data: allTags } = await supabase
     .from("tags")
     .select("id, slug, label_ar, category, sort_order")
     .order("sort_order");
 
-  const query = tag
-    ? supabase
-        .from("content")
-        .select(
-          "id, title, description, format, duration_label, icon, contributors:contributor_id(name), channels:channel_id(name), content_tags!inner(tags!inner(slug))",
-        )
-        .eq("content_tags.tags.slug", tag)
-    : supabase
-        .from("content")
-        .select(
-          "id, title, description, format, duration_label, icon, contributors:contributor_id(name), channels:channel_id(name)",
-        );
+  const sectionTags = ((allTags as Tag[]) ?? []).filter((t) => t.category === category);
+
+  let query = supabase
+    .from("content")
+    .select(
+      "id, title, description, format, duration_label, icon, contributors:contributor_id(name), channels:channel_id(name), content_tags!inner(tags!inner(slug,category))",
+    )
+    .eq("content_tags.tags.category", category);
+
+  if (tag) {
+    query = query.eq("content_tags.tags.slug", tag);
+  }
 
   const { data: content, error } = await query
     .order("published_at", { ascending: false })
@@ -46,14 +61,13 @@ export default async function LearnPage({
 
   return (
     <div>
-      <h2 className="mt-0.5 mb-1 text-xl font-extrabold text-ink">تعلّمي</h2>
-      <p className="mb-4 text-[12.5px] leading-7 text-ink-soft">
-        مو بس عن طفلك — فيه محتوى عن اللي مثلك 💛
-      </p>
-      <ChipRow tags={(tags as Tag[]) ?? []} activeTag={tag} />
-      {error && (
-        <p className="text-[12.5px] text-ink-soft">تعذّر تحميل المحتوى الآن.</p>
-      )}
+      <h2 className="mt-0.5 mb-1 text-xl font-extrabold text-ink">تعلم</h2>
+      <p className="mb-4 text-[12.5px] leading-7 text-ink-soft">{SECTION_SUBTITLE[section]}</p>
+
+      <SectionTabs active={section} />
+      <ChipRow tags={sectionTags} activeTag={tag} section={section} accent={section === "about"} />
+
+      {error && <p className="text-[12.5px] text-ink-soft">تعذّر تحميل المحتوى الآن.</p>}
       {content?.length === 0 && (
         <p className="text-[12.5px] text-ink-soft">ما فيه محتوى بالتصنيف بعد — قريبًا.</p>
       )}

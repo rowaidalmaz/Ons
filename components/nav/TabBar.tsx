@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 const TABS = [
   {
     href: "/",
-    label: "تعلّمي",
+    label: "تعلم",
     icon: (active: boolean) => (
       <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" fill="none" strokeWidth={1.7} stroke={active ? "var(--gold)" : "#B5A190"}>
         <path d="M4 19.5V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2Z" />
