@@ -1,5 +1,8 @@
 export type ContentFormat = "article" | "audio" | "video";
 export type TagCategory = "age_stage" | "about_her";
+
+/** A تعلم section: عنك (about her) or تربيتك (parenting by age stage). */
+export type Section = "about" | "parenting";
 export type DocPlatform = "youtube" | "netflix" | "bbc" | "independent";
 export type PostStatus = "pending" | "approved" | "rejected" | "flagged_crisis";
 

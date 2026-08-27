@@ -2,7 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { ChipRow } from "@/components/ui/ChipRow";
 import { SectionTabs } from "@/components/ui/SectionTabs";
 import { ContentCard } from "@/components/ui/ContentCard";
-import type { ContentFormat, Tag, TagCategory } from "@/lib/supabase/types";
+import type { ContentFormat, Section, Tag, TagCategory } from "@/lib/supabase/types";
 
 type ContentRow = {
   id: string;
@@ -15,12 +15,12 @@ type ContentRow = {
   channels: { name: string } | null;
 };
 
-const SECTION_CATEGORY: Record<string, TagCategory> = {
+const SECTION_CATEGORY: Record<Section, TagCategory> = {
   about: "about_her",
   parenting: "age_stage",
 };
 
-const SECTION_SUBTITLE: Record<string, string> = {
+const SECTION_SUBTITLE: Record<Section, string> = {
   about: "مو بس عن طفلك — هذا القسم عنكِ أنتِ: هويتك، علاقتك، شغلك، وجسمك 💛",
   parenting: "محتوى عن طفلك حسب مرحلته العمرية، من الولادة إلى المراهقة.",
 };
@@ -31,8 +31,7 @@ export default async function LearnPage({
   searchParams: Promise<{ section?: string; tag?: string }>;
 }) {
   const params = await searchParams;
-  const tag = params.tag;
-  const section = params.section === "parenting" ? "parenting" : "about";
+  const section: Section = params.section === "parenting" ? "parenting" : "about";
   const category = SECTION_CATEGORY[section];
 
   const supabase = await createClient();
@@ -43,6 +42,11 @@ export default async function LearnPage({
     .order("sort_order");
 
   const sectionTags = ((allTags as Tag[]) ?? []).filter((t) => t.category === category);
+
+  // Only honour ?tag= when it belongs to the active section — a stale tag left
+  // in the URL from the other section would otherwise show an empty list under
+  // a highlighted "الكل" chip.
+  const tag = sectionTags.some((t) => t.slug === params.tag) ? params.tag : undefined;
 
   let query = supabase
     .from("content")

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { Tag } from "@/lib/supabase/types";
+import type { Section, Tag } from "@/lib/supabase/types";
 
 /**
  * Sub-filter chips scoped to a single تعلم section (عنك / تربيتك). `tags`
@@ -14,7 +14,7 @@ export function ChipRow({
 }: {
   tags: Tag[];
   activeTag?: string;
-  section: string;
+  section: Section;
   accent?: boolean;
 }) {
   return (
@@ -44,11 +44,13 @@ function Chip({
   active: boolean;
   accent?: boolean;
 }) {
-  const base = "flex-none whitespace-nowrap rounded-full border px-3.5 py-1.5 text-[12.5px] font-medium";
+  const base =
+    "flex-none whitespace-nowrap rounded-full border px-3.5 py-1.5 text-[12.5px] font-medium transition-colors";
   if (active) {
     return (
       <Link
         href={href}
+        aria-current="true"
         className={`${base} ${accent ? "border-gold bg-gold text-ink" : "border-ink bg-ink text-white"}`}
       >
         {label}
@@ -58,7 +60,7 @@ function Chip({
   return (
     <Link
       href={href}
-      className={`${base} bg-white ${accent ? "border-gold text-[#8B4A36]" : "border-line text-ink-soft"}`}
+      className={`${base} bg-white ${accent ? "border-gold text-[#c2410c]" : "border-line text-ink-soft"}`}
     >
       {label}
     </Link>
