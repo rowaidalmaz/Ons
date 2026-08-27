@@ -1,22 +1,24 @@
 @import "tailwindcss";
 
 /*
- * Palette adopted from thmanyah.com (ثمانية) — their `--eight-color-*` system:
- * warm cream surfaces, near-black text, one vivid orange accent, warm-gray
- * hairlines. reference/manara.html holds the prior Najdi palette if we revert.
+ * Look & feel adopted from thmanyah.com (ثمانية) — their `--eight-*` system:
+ * IBM Plex Sans Arabic, warm cream surfaces, near-black text, 65%-black
+ * secondary text, one vivid orange accent, hairline borders, tinted hover
+ * fills, generous radii. reference/manara.html holds the prior Najdi design.
  */
 :root {
-  --ink: #000000;          /* eight: text-base / primary — headings, strong text */
-  --ink-soft: #5c5750;     /* muted body text (derived, warm gray) */
-  --gold: #fa541c;         /* eight: link — the brand accent */
-  --gold-soft: #fca574;    /* lighter accent tint (derived) */
-  --gold-pale: #fdeae1;    /* pale accent wash (derived) */
-  --sage: #00ba74;         /* eight: success — "article" / positive category */
-  --dustyblue: #597ef7;    /* eight: info — "audio" / info category */
-  --paper: #f6f4ee;        /* eight: bg-layout — page background */
-  --paper-deep: #efede8;   /* eight: primary-bg — raised surfaces, frieze base */
-  --charcoal: #1c1c1c;     /* body text, a hair off pure black */
-  --line: #dbd9d5;         /* eight: split — hairline borders */
+  --ink: #000000;               /* eight: text primary — headings, strong text */
+  --ink-soft: rgba(0, 0, 0, 0.65); /* eight: text-secondary */
+  --gold: #fa541c;              /* eight: link — the brand accent */
+  --gold-soft: #fca574;         /* lighter accent tint */
+  --gold-pale: #fdeae1;         /* pale accent wash */
+  --sage: #00ba74;              /* eight: success — "article" category */
+  --dustyblue: #597ef7;         /* eight: info — "audio" category */
+  --paper: #f6f4ee;             /* eight: layout-body-bg — page background */
+  --paper-deep: #efede8;        /* eight: primary-bg — raised surfaces */
+  --tint: #ece7df;             /* pallet-tinted — hover / active fills */
+  --charcoal: #1a1a1a;          /* body text, a hair off pure black */
+  --line: #e2ded6;             /* hairline borders (warm, very low contrast) */
 }
 
 @theme inline {
@@ -29,9 +31,10 @@
   --color-dustyblue: var(--dustyblue);
   --color-paper: var(--paper);
   --color-paper-deep: var(--paper-deep);
+  --color-tint: var(--tint);
   --color-charcoal: var(--charcoal);
   --color-line: var(--line);
-  --font-sans: var(--font-cairo);
+  --font-sans: var(--font-arabic);
 }
 
 html,
@@ -43,7 +46,8 @@ body {
 body {
   background: var(--paper);
   color: var(--charcoal);
-  font-family: var(--font-cairo), sans-serif;
+  font-family: var(--font-arabic), "IBM Plex Sans Arabic", sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* accessibility floor: visible focus, respect reduced motion */
@@ -61,26 +65,3 @@ a:focus-visible {
     transition-duration: 0.001ms !important;
   }
 }
-
-/*
- * Signature motif: triangular frieze referencing Najdi mudbrick architecture
- * (الفريز النجدي), copied byte-for-byte from the prototype's .tazhib-strip rule.
- * Do not replace with a generic gradient bar.
- */
-.tazhib-strip {
-  height: 14px;
-  width: 100%;
-  background:
-    linear-gradient(135deg, var(--gold) 25%, transparent 25.5%) 0 0,
-    linear-gradient(225deg, var(--gold) 25%, transparent 25.5%) 0 0,
-    linear-gradient(315deg, var(--gold-soft) 25%, transparent 25.5%) 0 0,
-    linear-gradient(45deg, var(--gold-soft) 25%, transparent 25.5%) 0 0,
-    var(--paper-deep);
-  background-size: 16px 16px;
-  background-position:
-    0 0,
-    8px 0,
-    8px -8px,
-    0 8px;
-}
-

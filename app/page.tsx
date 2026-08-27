@@ -65,17 +65,19 @@ export default async function LearnPage({
 
   return (
     <div>
-      <h2 className="mt-0.5 mb-1 text-xl font-extrabold text-ink">تعلم</h2>
-      <p className="mb-4 text-[12.5px] leading-7 text-ink-soft">{SECTION_SUBTITLE[section]}</p>
+      <h1 className="mb-2 text-3xl font-bold tracking-tight text-ink lg:text-[34px]">تعلم</h1>
+      <p className="mb-6 max-w-xl text-[14px] leading-7 text-ink-soft">
+        {SECTION_SUBTITLE[section]}
+      </p>
 
       <SectionTabs active={section} />
       <ChipRow tags={sectionTags} activeTag={tag} section={section} accent={section === "about"} />
 
-      {error && <p className="text-[12.5px] text-ink-soft">تعذّر تحميل المحتوى الآن.</p>}
+      {error && <p className="text-[14px] text-ink-soft">تعذّر تحميل المحتوى الآن.</p>}
       {content?.length === 0 && (
-        <p className="text-[12.5px] text-ink-soft">ما فيه محتوى بالتصنيف بعد — قريبًا.</p>
+        <p className="text-[14px] text-ink-soft">ما فيه محتوى بالتصنيف بعد — قريبًا.</p>
       )}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-x-6 gap-y-9 sm:grid-cols-2 lg:grid-cols-3">
         {content?.map((item) => (
           <ContentCard
             key={item.id}

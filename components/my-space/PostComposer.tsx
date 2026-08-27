@@ -51,7 +51,7 @@ export function PostComposer() {
 
   if (state.kind === "crisis") {
     return (
-      <div className="mb-3 rounded-2xl border border-gold bg-gold-pale p-4 text-[12.5px] leading-7 text-ink">
+      <div className="mb-3 rounded-2xl border border-gold bg-gold-pale p-5 text-[13px] leading-7 text-ink">
         <p className="mb-2 font-bold">حابين نطمن عليك أول شي 🤍</p>
         <p className="mb-2">ما قدرنا ننشر هذا المنشور، بس تقدرين تتواصلين مع أحد الجهات التالية إذا تحتاجين مساعدة فورية:</p>
         <ul className="list-inside list-disc space-y-1">
@@ -81,13 +81,13 @@ export function PostComposer() {
         onChange={(e) => setBody(e.target.value)}
         placeholder="شاركي الحين بخاطرك، بدون اسم"
         rows={3}
-        className="mb-2 w-full rounded-2xl border border-line bg-white p-3.5 text-[12.5px] leading-7 text-charcoal outline-none"
+        className="mb-2 w-full rounded-xl border border-line bg-white p-4 text-[13.5px] leading-7 text-charcoal outline-none focus:border-ink"
       />
       <button
         type="button"
         onClick={submit}
         disabled={state.kind === "submitting" || !body.trim()}
-        className="w-full rounded-2xl bg-ink py-3.5 text-[13px] font-bold text-[#F3EEE3] disabled:opacity-50"
+        className="w-full rounded-xl bg-ink py-3.5 text-[14px] font-bold text-white transition-opacity disabled:opacity-50"
       >
         {state.kind === "submitted" ? "تم الإرسال، بانتظار المراجعة 🤍" : "شاركي الحين بخاطرك، بدون اسم"}
       </button>

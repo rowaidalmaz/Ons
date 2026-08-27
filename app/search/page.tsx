@@ -18,21 +18,21 @@ export default async function SearchPage({
 
   return (
     <div>
-      <h2 className="mt-0.5 mb-1 text-xl font-extrabold text-ink">ابحث</h2>
-      <p className="mb-4 text-[12.5px] leading-7 text-ink-soft">
+      <h1 className="mb-2 text-3xl font-bold tracking-tight text-ink lg:text-[34px]">ابحث</h1>
+      <p className="mb-6 max-w-xl text-[14px] leading-7 text-ink-soft">
         سؤال يدور في راسك من المجرّد التبويب، وخلي العالم يجاوبك بالعربي.
       </p>
-      <div className="max-w-xl">
+      <div className="mb-8 max-w-xl">
         <SearchBox
           action="/search"
           placeholder="مثال: نوم الأطفال، القلق عند المراهقين..."
           defaultValue={q}
         />
-        <div className="mb-3.5 rounded-lg bg-gold-pale px-2.5 py-2 text-[11px] leading-7 text-[#9a3412]">
+        <div className="mt-3 rounded-xl bg-gold-pale px-3 py-2.5 text-[12px] leading-7 text-[#9a3412]">
           هذه نتائج توضيحية لعرض فكرة المنتج — في النسخة الفعلية سيتم الجلب من قواعد أبحاث حقيقية وترجمتها ولحظيًا.
         </div>
       </div>
-      <div className="grid gap-4 lg:grid-cols-2">
+      <div className="grid gap-x-6 gap-y-6 lg:grid-cols-2">
         {results?.map((r) => (
           <ResearchResultCard
             key={r.id}

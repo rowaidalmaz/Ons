@@ -32,15 +32,15 @@ export function DocumentaryCard({
   languageBadge: string;
 }) {
   return (
-    <div className="mb-2.5 flex gap-3 rounded-2xl border border-line bg-white p-2.5">
+    <div className="flex gap-3.5 rounded-2xl p-2 transition-colors hover:bg-tint">
       <div
-        className="flex h-16 w-24 flex-none items-center justify-center rounded-[10px] text-xl"
-        style={{ background: "linear-gradient(150deg, var(--sage), #5E6B44)" }}
+        className="flex h-20 w-28 flex-none items-center justify-center rounded-xl text-2xl"
+        style={{ background: "linear-gradient(150deg, var(--sage), #0a7d54)" }}
       >
         🎞️
       </div>
-      <div className="min-w-0 flex-1">
-        <div className="mb-1 flex flex-wrap gap-1">
+      <div className="min-w-0 flex-1 py-0.5">
+        <div className="mb-1.5 flex flex-wrap gap-1">
           <span
             className="inline-block rounded-lg px-2 py-0.5 text-[10px] font-bold text-white"
             style={{ background: PLATFORM_BG[platform] }}
@@ -51,11 +51,11 @@ export function DocumentaryCard({
             {languageBadge}
           </span>
         </div>
-        <h4 className="mb-1 text-[13px] leading-6 text-ink">{title}</h4>
-        <p className="mb-1 text-[11px] italic text-ink-soft">
+        <h4 className="mb-1 line-clamp-2 text-[15px] font-bold leading-6 text-ink">{title}</h4>
+        <p className="mb-1 text-[11.5px] italic text-ink-soft">
           {originalTitle} — {channelOrStudio} · {durationLabel}
         </p>
-        <p className="text-[11px] leading-6 text-[#9C8874]">{description}</p>
+        <p className="line-clamp-2 text-[12px] leading-6 text-ink-soft">{description}</p>
       </div>
     </div>
   );

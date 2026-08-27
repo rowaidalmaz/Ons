@@ -18,7 +18,7 @@ export function ChipRow({
   accent?: boolean;
 }) {
   return (
-    <div className="mb-1.5 flex gap-2 overflow-x-auto pb-3.5">
+    <div className="mb-6 flex gap-2 overflow-x-auto pb-1">
       <Chip href={`/?section=${section}`} label="الكل" active={!activeTag} accent={accent} />
       {tags.map((tag) => (
         <Chip
@@ -45,23 +45,20 @@ function Chip({
   accent?: boolean;
 }) {
   const base =
-    "flex-none whitespace-nowrap rounded-full border px-3.5 py-1.5 text-[12.5px] font-medium transition-colors";
+    "flex-none whitespace-nowrap rounded-lg px-3.5 py-1.5 text-[13px] font-medium transition-colors";
   if (active) {
     return (
       <Link
         href={href}
         aria-current="true"
-        className={`${base} ${accent ? "border-gold bg-gold text-ink" : "border-ink bg-ink text-white"}`}
+        className={`${base} ${accent ? "bg-gold text-white" : "bg-ink text-white"}`}
       >
         {label}
       </Link>
     );
   }
   return (
-    <Link
-      href={href}
-      className={`${base} bg-white ${accent ? "border-gold text-[#c2410c]" : "border-line text-ink-soft"}`}
-    >
+    <Link href={href} className={`${base} bg-tint text-ink-soft hover:text-ink`}>
       {label}
     </Link>
   );
