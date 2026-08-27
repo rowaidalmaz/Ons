@@ -162,7 +162,7 @@ export function MoodExperience({
               </div>
             </div>
           ))}
-          <div className="mt-0.5 rounded-lg bg-gold-pale px-2.5 py-2 text-[11px] leading-7 text-[#A6875A]">
+          <div className="mt-0.5 rounded-lg bg-gold-pale px-2.5 py-2 text-[11px] leading-7 text-[#9a3412]">
             كتب حقيقية لكن على الفكرة — النسخة الفعلية تربط مباشرة بمتاجر/مكتبات لشرائها أو قراءتها.
           </div>
         </div>

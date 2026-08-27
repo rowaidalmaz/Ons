@@ -28,7 +28,7 @@ export default async function DocumentariesPage({
           placeholder="مثال: نوم الرضيع، أساليب تربية حول العالم..."
           defaultValue={q}
         />
-        <div className="mb-3.5 rounded-lg bg-gold-pale px-2.5 py-2 text-[11px] leading-7 text-[#A6875A]">
+        <div className="mb-3.5 rounded-lg bg-gold-pale px-2.5 py-2 text-[11px] leading-7 text-[#9a3412]">
           نتائج توضيحية من مصادر ومنصات حقيقية — في النسخة الفعلية تُجلب من يوتيوب ونتفليكس وغيرها محظيًا حسب بحثك، ومن لا تسمح بها شروط أي منصة يُشار إليها فقط برابط خارجي.
         </div>
       </div>

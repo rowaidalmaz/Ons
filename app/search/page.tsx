@@ -28,7 +28,7 @@ export default async function SearchPage({
           placeholder="مثال: نوم الأطفال، القلق عند المراهقين..."
           defaultValue={q}
         />
-        <div className="mb-3.5 rounded-lg bg-gold-pale px-2.5 py-2 text-[11px] leading-7 text-[#A6875A]">
+        <div className="mb-3.5 rounded-lg bg-gold-pale px-2.5 py-2 text-[11px] leading-7 text-[#9a3412]">
           هذه نتائج توضيحية لعرض فكرة المنتج — في النسخة الفعلية سيتم الجلب من قواعد أبحاث حقيقية وترجمتها ولحظيًا.
         </div>
       </div>

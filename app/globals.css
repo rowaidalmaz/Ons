@@ -1,22 +1,22 @@
 @import "tailwindcss";
 
 /*
- * Design tokens transcribed verbatim from the manara.html prototype's :root block.
- * Keep these values in sync with reference/manara.html — they are the single
- * source of truth for the app's palette, not Tailwind's default colors.
+ * Palette adopted from thmanyah.com (ثمانية) — their `--eight-color-*` system:
+ * warm cream surfaces, near-black text, one vivid orange accent, warm-gray
+ * hairlines. reference/manara.html holds the prior Najdi palette if we revert.
  */
 :root {
-  --ink: #4a342a;
-  --ink-soft: #8a6f5f;
-  --gold: #c1694f;
-  --gold-soft: #f0b8a0;
-  --gold-pale: #f8e4da;
-  --sage: #96a06e;
-  --dustyblue: #a15a52;
-  --paper: #fbf3ea;
-  --paper-deep: #f0dfcf;
-  --charcoal: #4a3a32;
-  --line: rgba(74, 52, 42, 0.12);
+  --ink: #000000;          /* eight: text-base / primary — headings, strong text */
+  --ink-soft: #5c5750;     /* muted body text (derived, warm gray) */
+  --gold: #fa541c;         /* eight: link — the brand accent */
+  --gold-soft: #fca574;    /* lighter accent tint (derived) */
+  --gold-pale: #fdeae1;    /* pale accent wash (derived) */
+  --sage: #00ba74;         /* eight: success — "article" / positive category */
+  --dustyblue: #597ef7;    /* eight: info — "audio" / info category */
+  --paper: #f6f4ee;        /* eight: bg-layout — page background */
+  --paper-deep: #efede8;   /* eight: primary-bg — raised surfaces, frieze base */
+  --charcoal: #1c1c1c;     /* body text, a hair off pure black */
+  --line: #dbd9d5;         /* eight: split — hairline borders */
 }
 
 @theme inline {
