@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens transcribed verbatim from the manara.html prototype's :root block.
+ * Keep these values in sync with reference/manara.html — they are the single
+ * source of truth for the app's palette, not Tailwind's default colors.
+ */
+:root {
+  --ink: #4a342a;
+  --ink-soft: #8a6f5f;
+  --gold: #c1694f;
+  --gold-soft: #f0b8a0;
+  --gold-pale: #f8e4da;
+  --sage: #96a06e;
+  --dustyblue: #a15a52;
+  --paper: #fbf3ea;
+  --paper-deep: #f0dfcf;
+  --charcoal: #4a3a32;
+  --line: rgba(74, 52, 42, 0.12);
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-gold-pale: var(--gold-pale);
+  --color-sage: var(--sage);
+  --color-dustyblue: var(--dustyblue);
+  --color-paper: var(--paper);
+  --color-paper-deep: var(--paper-deep);
+  --color-charcoal: var(--charcoal);
+  --color-line: var(--line);
+  --font-sans: var(--font-cairo);
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--paper);
+  color: var(--charcoal);
+  font-family: var(--font-cairo), sans-serif;
+}
+
+/* accessibility floor: visible focus, respect reduced motion */
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/*
+ * Signature motif: triangular frieze referencing Najdi mudbrick architecture
+ * (الفريز النجدي), copied byte-for-byte from the prototype's .tazhib-strip rule.
+ * Do not replace with a generic gradient bar.
+ */
+.tazhib-strip {
+  height: 14px;
+  width: 100%;
+  background:
+    linear-gradient(135deg, var(--gold) 25%, transparent 25.5%) 0 0,
+    linear-gradient(225deg, var(--gold) 25%, transparent 25.5%) 0 0,
+    linear-gradient(315deg, var(--gold-soft) 25%, transparent 25.5%) 0 0,
+    linear-gradient(45deg, var(--gold-soft) 25%, transparent 25.5%) 0 0,
+    var(--paper-deep);
+  background-size: 16px 16px;
+  background-position:
+    0 0,
+    8px 0,
+    8px -8px,
+    0 8px;
+}
+
+/* real phones/tablets: edge-to-edge content, no floating-card chrome */
+.app-shell {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+}
+@media (min-width: 768px) {
+  .app-shell {
+    max-width: 520px;
+    min-height: auto;
+    margin-top: 28px;
+    margin-bottom: 28px;
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow:
+      0 30px 70px rgba(74, 41, 30, 0.25),
+      0 0 0 1px rgba(74, 41, 30, 0.06);
+  }
+}

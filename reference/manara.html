@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>منارة</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap');
+
+:root{
+  --ink:#4A342A;
+  --ink-soft:#8A6F5F;
+  --gold:#C1694F;
+  --gold-soft:#F0B8A0;
+  --gold-pale:#F8E4DA;
+  --sage:#96A06E;
+  --dustyblue:#A15A52;
+  --paper:#FBF3EA;
+  --paper-deep:#F0DFCF;
+  --charcoal:#4A3A32;
+  --line: rgba(74,52,42,0.12);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background: linear-gradient(180deg,#7A4130 0%, #7A4130 340px, var(--paper) 340px);
+  font-family:'Cairo', sans-serif;
+  color:var(--charcoal);
+  min-height:100dvh;
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  padding:28px 14px;
+}
+.phone{
+  width:100%;
+  max-width:410px;
+  background:var(--paper);
+  border-radius:34px;
+  overflow:hidden;
+  box-shadow: 0 30px 70px rgba(74,41,30,0.35), 0 0 0 1px rgba(255,255,255,0.08);
+  min-height:760px;
+  max-height:880px;
+  display:flex;
+  flex-direction:column;
+  position:relative;
+}
+
+/* --- responsive: real phones get an edge-to-edge app, not a card floating in a browser --- */
+@media (max-width: 480px){
+  body{ padding:0; align-items:stretch; background:var(--paper); }
+  .phone{
+    max-width:100%;
+    min-height:100dvh;
+    max-height:none;
+    border-radius:0;
+    box-shadow:none;
+  }
+}
+@media (min-width: 481px) and (max-width: 700px){
+  .phone{ max-width:440px; }
+}
+
+/* --- accessibility floor: visible focus, respect reduced motion --- */
+button:focus-visible, input:focus-visible, .chip:focus-visible, .mood-btn:focus-visible{
+  outline:2px solid var(--gold); outline-offset:2px;
+}
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; }
+}
+
+/* --- signature: triangular frieze inspired by Najdi mudbrick architecture (الفريز النجدي) --- */
+.tazhib-strip{
+  height:14px;
+  width:100%;
+  background:
+    linear-gradient(135deg, var(--gold) 25%, transparent 25.5%) 0 0,
+    linear-gradient(225deg, var(--gold) 25%, transparent 25.5%) 0 0,
+    linear-gradient(315deg, var(--gold-soft) 25%, transparent 25.5%) 0 0,
+    linear-gradient(45deg, var(--gold-soft) 25%, transparent 25.5%) 0 0,
+    var(--paper-deep);
+  background-size: 16px 16px;
+  background-position: 0 0, 8px 0, 8px -8px, 0 8px;
+}
+
+/* --- header --- */
+.app-header{
+  background: radial-gradient(120% 160% at 20% -10%, #C97B5D 0%, #9C4E38 55%, #6B3324 100%);
+  color:#F3EEE3;
+  padding:26px 22px 20px;
+  position:relative;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.lantern{
+  width:34px;height:34px;flex:0 0 auto;
+}
+.brand-name{
+  font-family:'Cairo', sans-serif;
+  font-size:26px;
+  font-weight:900;
+  color:var(--gold-soft);
+  letter-spacing:0.5px;
+}
+.tagline{
+  margin-top:6px;
+  font-size:13px;
+  color:#F3E2D6;
+  line-height:1.7;
+}
+.header-glow{
+  position:absolute;
+  inset:0;
+  background: radial-gradient(220px 140px at 85% 0%, rgba(240,184,160,0.35), transparent 70%);
+  pointer-events:none;
+}
+
+/* --- nav --- */
+.tabs{
+  display:flex;
+  background:#fff;
+  border-bottom:1px solid var(--line);
+}
+.tab-btn{
+  flex:1;
+  border:none;
+  background:none;
+  padding:12px 3px 10px;
+  font-family:'Cairo',sans-serif;
+  font-size:11px;
+  font-weight:700;
+  color:#B5A190;
+  cursor:pointer;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:4px;
+  position:relative;
+  transition:color .2s;
+  white-space:nowrap;
+}
+.tab-btn svg{width:19px;height:19px;stroke:#B5A190;transition:stroke .2s;fill:none;stroke-width:1.7;}
+.tab-btn.active{color:var(--ink);}
+.tab-btn.active svg{stroke:var(--gold);}
+.tab-btn.active::after{
+  content:"";
+  position:absolute;
+  bottom:-1px;left:50%;transform:translateX(50%);
+  width:26px;height:3px;border-radius:3px;
+  background:var(--gold);
+}
+
+.content{
+  flex:1;
+  overflow-y:auto;
+  padding:18px 18px 26px;
+}
+.content::-webkit-scrollbar{width:0;}
+
+h2.section-title{
+  font-family:'Cairo', sans-serif;
+  font-weight:800;
+  font-size:20px;
+  color:var(--ink);
+  margin:2px 0 4px;
+}
+.section-sub{
+  font-size:12.5px;
+  color:var(--ink-soft);
+  margin:0 0 16px;
+  line-height:1.8;
+}
+
+/* chips */
+.chips{
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  padding-bottom:14px;
+  margin-bottom:6px;
+}
+.chip{
+  flex:0 0 auto;
+  padding:7px 14px;
+  border-radius:20px;
+  background:#fff;
+  border:1px solid var(--line);
+  font-size:12.5px;
+  font-weight:500;
+  color:var(--ink-soft);
+  cursor:pointer;
+  white-space:nowrap;
+}
+.chip.active{background:var(--ink); color:#fff; border-color:var(--ink);}
+.chip.chip-self{border-color:var(--gold); color:#8B4A36;}
+.chip.chip-self.active{background:var(--gold); color:var(--ink); border-color:var(--gold);}
+
+/* learn cards — thmanyah-style editorial card: thumbnail, title, byline, channel/date */
+.lcard{
+  background:#fff;
+  border-radius:16px;
+  margin-bottom:14px;
+  border:1px solid var(--line);
+  overflow:hidden;
+}
+.lcard-thumb{
+  height:110px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:30px;
+  position:relative;
+}
+.lcard-thumb::after{
+  content:""; position:absolute; inset:0;
+  background:linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.18));
+}
+.lcard.type-a .lcard-thumb{background:linear-gradient(135deg, var(--sage), #5E6B44);}
+.lcard.type-b .lcard-thumb{background:linear-gradient(135deg, var(--gold), #8B4A36);}
+.lcard.type-c .lcard-thumb{background:linear-gradient(135deg, var(--dustyblue), #7A3F38);}
+.lcard-body{padding:13px 15px 14px;}
+.lcard h3{margin:0 0 8px; font-size:15px; color:var(--ink); line-height:1.5;}
+.lcard p{margin:0 0 10px; font-size:12.5px; color:#6B5847; line-height:1.75;}
+.lcard-byline{
+  display:flex; align-items:center; gap:8px; padding-top:10px; border-top:1px solid var(--line);
+}
+.lcard-avatar{
+  width:26px; height:26px; border-radius:50%; flex:0 0 auto;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--paper-deep); color:var(--ink); font-size:11px; font-weight:700;
+}
+.lcard-byline-text{font-size:11px; color:#9C8874; line-height:1.6;}
+.lcard-byline-text b{color:var(--ink-soft); font-weight:700;}
+.badge{
+  font-size:10.5px; font-weight:700; color:#fff;
+  background:rgba(0,0,0,0.28); padding:3px 9px; border-radius:20px; white-space:nowrap;
+  position:absolute; top:10px; inset-inline-start:10px;
+}
+
+/* search tab */
+.search-box{
+  display:flex; align-items:center; gap:8px;
+  background:#fff; border:1px solid var(--line); border-radius:14px;
+  padding:11px 13px; margin-bottom:10px;
+}
+.search-box input{
+  border:none; outline:none; flex:1; font-family:'Cairo';
+  font-size:13.5px; background:transparent; color:var(--charcoal);
+}
+.search-box svg{width:18px;height:18px;stroke:#B5A190;fill:none;stroke-width:1.8;}
+.translate-toggle{
+  display:flex; align-items:center; justify-content:space-between;
+  background:#fff; border:1px solid var(--line); border-radius:14px;
+  padding:10px 13px; margin-bottom:16px; font-size:12.5px; color:var(--ink-soft); font-weight:500;
+}
+.switch{
+  width:38px; height:22px; background:var(--gold); border-radius:20px; position:relative; cursor:pointer; flex:0 0 auto;
+}
+.switch::after{
+  content:""; position:absolute; top:2px; right:2px; width:18px; height:18px; background:#fff; border-radius:50%;
+  transition:transform .2s;
+}
+.switch.off{background:#D8D3C4;}
+.switch.off::after{transform:translateX(16px);}
+
+.demo-note{
+  font-size:11px; color:#A6875A; background:var(--gold-pale); padding:8px 11px;
+  border-radius:10px; margin-bottom:14px; line-height:1.7;
+}
+
+.rcard{
+  background:#fff; border-radius:16px; padding:15px; margin-bottom:12px; border:1px solid var(--line);
+}
+.rcard-lang{
+  display:inline-block; font-size:10px; font-weight:700; color:#fff; background:var(--dustyblue);
+  padding:2px 8px; border-radius:8px; margin-bottom:8px; margin-inline-end:5px;
+}
+.rcard h3{margin:0 0 6px; font-size:14.5px; color:var(--ink); line-height:1.5;}
+.rcard .orig-title{
+  font-size:11px; color:#A99680; margin:0 0 8px; font-style:italic;
+}
+.rcard p.summary{margin:0 0 10px; font-size:12.5px; color:#6B5847; line-height:1.8;}
+.rcard-foot{display:flex; justify-content:space-between; align-items:center; font-size:11px; color:#A99680;}
+.rcard-foot a{color:var(--gold); text-decoration:none; font-weight:700;}
+
+/* my space tab */
+.mood-row{
+  display:flex; justify-content:space-between; background:#fff; border:1px solid var(--line);
+  border-radius:16px; padding:14px; margin-bottom:16px;
+}
+.mood-btn{
+  width:40px;height:40px;border-radius:50%;border:none;background:var(--paper-deep);
+  font-size:19px; cursor:pointer; display:flex; align-items:center; justify-content:center;
+}
+.affirm{
+  font-family:'Cairo', sans-serif;
+  font-weight:700;
+  font-size:16px; color:var(--ink); text-align:center; line-height:1.9;
+  padding:16px 10px; margin-bottom:16px;
+  border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+}
+.post{
+  background:#fff; border-radius:16px; padding:14px; margin-bottom:12px; border:1px solid var(--line);
+}
+.post-head{display:flex; align-items:center; gap:8px; margin-bottom:8px;}
+.avatar{
+  width:30px;height:30px;border-radius:50%; background:var(--dustyblue); flex:0 0 auto;
+  display:flex;align-items:center;justify-content:center; color:#fff; font-size:13px; font-weight:700;
+}
+.post-name{font-size:12.5px; font-weight:700; color:var(--ink);}
+.post-time{font-size:10.5px; color:#B6A48F;}
+.post p{margin:0 0 8px; font-size:12.5px; color:#5A473C; line-height:1.85;}
+.post-foot{display:flex; gap:16px; font-size:11.5px; color:#A99680;}
+.share-btn{
+  width:100%; margin-top:4px; padding:13px; border:none; border-radius:14px;
+  background:var(--ink); color:#F3EEE3; font-family:'Cairo'; font-weight:700; font-size:13px; cursor:pointer;
+}
+
+/* mood player */
+.mood-btn.selected{ background:var(--gold); }
+.player{
+  background: linear-gradient(135deg,#8A4A34, #5A2E20);
+  border-radius:18px; padding:16px 16px 14px; margin-bottom:16px; color:#F3EEE3;
+  display:none;
+}
+.player.show{display:block;}
+.player-top{display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;}
+.player-label{font-size:10.5px; color:var(--gold-soft); font-weight:700; letter-spacing:.3px;}
+.player-title{font-family:'Cairo', sans-serif; font-weight:800; font-size:17px; margin:2px 0 12px;}
+.player-row{display:flex; align-items:center; gap:12px;}
+.play-btn{
+  width:42px;height:42px;border-radius:50%; border:none; background:var(--gold); color:var(--ink);
+  display:flex; align-items:center; justify-content:center; cursor:pointer; flex:0 0 auto;
+}
+.play-btn svg{width:18px;height:18px;}
+.eq{
+  flex:1; height:26px; display:flex; align-items:flex-end; gap:3px;
+}
+.eq span{
+  flex:1; background:var(--gold-soft); border-radius:2px; height:20%;
+  transition:height .18s ease;
+}
+.vol-row{display:flex; align-items:center; gap:8px; margin-top:12px;}
+.vol-row svg{width:15px;height:15px; stroke:#F3E2D6; fill:none; stroke-width:1.8; flex:0 0 auto;}
+.vol-row input[type=range]{flex:1; accent-color:var(--gold);}
+
+.lang-toggle{display:flex; gap:6px; margin:8px 0 10px;}
+.lang-chip{
+  border:1px solid rgba(255,255,255,0.25); background:transparent; color:#F3E2D6;
+  font-family:'Cairo'; font-size:11px; font-weight:700; padding:4px 12px; border-radius:20px; cursor:pointer;
+}
+.lang-chip.active{background:var(--gold); border-color:var(--gold); color:var(--ink);}
+
+.book-card{
+  background:#fff; border-radius:14px; padding:13px; margin-bottom:10px; border:1px solid var(--line);
+  display:flex; gap:11px;
+}
+.book-cover{
+  width:42px; height:58px; border-radius:6px; flex:0 0 auto;
+  background:linear-gradient(160deg, var(--sage), #5E6B44);
+  display:flex; align-items:center; justify-content:center; color:#fff; font-size:18px;
+}
+.book-info h4{margin:0 0 3px; font-size:13px; color:var(--ink);}
+.book-info p{margin:0; font-size:11.5px; color:#7A6659; line-height:1.7;}
+.book-lang{
+  display:inline-block; font-size:9.5px; font-weight:700; color:#fff; background:var(--dustyblue);
+  padding:1px 7px; border-radius:8px; margin-bottom:5px;
+}
+.book-lang.en{background:var(--sage);}
+
+/* documentaries tab */
+.doc-hero{
+  position:relative; border-radius:18px; overflow:hidden; margin-bottom:18px;
+  height:200px; display:flex; align-items:flex-end;
+  background: linear-gradient(160deg, #C97B5D, #6B3324);
+}
+.doc-hero::before{
+  content:""; position:absolute; inset:0;
+  background:linear-gradient(0deg, rgba(0,0,0,0.55) 0%, transparent 55%);
+}
+.doc-hero-icon{
+  position:absolute; top:14px; inset-inline-start:14px; font-size:26px; opacity:0.9;
+}
+.doc-hero-body{position:relative; padding:16px; color:#fff;}
+.doc-hero-tag{
+  display:inline-block; font-size:10px; font-weight:700; background:var(--gold);
+  color:#fff; padding:3px 10px; border-radius:20px; margin-bottom:8px;
+}
+.doc-hero h3{margin:0 0 6px; font-size:17px; line-height:1.5;}
+.doc-hero p{margin:0; font-size:12px; color:#F3E2D6; line-height:1.7;}
+.doc-hero-meta{margin-top:8px; font-size:11px; color:#F0C9B4;}
+.doc-play{
+  position:absolute; top:14px; inset-inline-end:14px;
+  width:36px; height:36px; border-radius:50%; background:rgba(255,255,255,0.9);
+  display:flex; align-items:center; justify-content:center;
+}
+.doc-play svg{width:14px; height:14px; fill:var(--ink);}
+
+.doc-section-label{
+  font-size:12px; font-weight:700; color:var(--ink-soft); margin:4px 0 10px;
+}
+.doc-card{
+  display:flex; gap:12px; background:#fff; border-radius:14px; padding:10px;
+  margin-bottom:10px; border:1px solid var(--line);
+}
+.doc-thumb{
+  width:96px; height:64px; border-radius:10px; flex:0 0 auto; position:relative;
+  display:flex; align-items:center; justify-content:center; font-size:20px;
+  background:linear-gradient(150deg, var(--dustyblue), #7A3F38);
+}
+.doc-thumb.alt{background:linear-gradient(150deg, var(--sage), #5E6B44);}
+.doc-thumb-dur{
+  position:absolute; bottom:4px; inset-inline-end:4px; font-size:9px; color:#fff;
+  background:rgba(0,0,0,0.5); padding:1px 6px; border-radius:6px;
+}
+.doc-info{flex:1; min-width:0;}
+.doc-info .doc-series{font-size:10px; color:var(--gold); font-weight:700; margin-bottom:2px;}
+.doc-info h4{margin:0 0 4px; font-size:13px; color:var(--ink); line-height:1.5;}
+.doc-info p{margin:0; font-size:11px; color:#9C8874; line-height:1.6;}
+</style>
+</head>
+<body>
+
+<div class="phone">
+  <div class="app-header">
+    <div class="header-glow"></div>
+    <div class="brand">
+      <svg class="lantern" viewBox="0 0 24 24" fill="none" stroke="#F0B8A0" stroke-width="1.4">
+        <path d="M9 2h6M12 2v3"/>
+        <path d="M7 6h10l-1.2 11.5c-.15 1.4-1.35 2.5-2.8 2.5h-2c-1.45 0-2.65-1.1-2.8-2.5L7 6Z"/>
+        <path d="M9 6c0-2 1-3.5 3-3.5s3 1.5 3 3.5"/>
+        <path d="M12 20v2M9.5 22h5"/>
+        <circle cx="12" cy="11" r="2.3" fill="#F0B8A0" stroke="none"/>
+      </svg>
+      <span class="brand-name">منارة</span>
+    </div>
+    <p class="tagline">تعبانة الملم، عادي. منارة ما تضويك في الطريق، بس تحن عليك 🌙</p>
+  </div>
+  <div class="tazhib-strip"></div>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="learn">
+      <svg viewBox="0 0 24 24"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2Z"/><path d="M8 7h8M8 11h6"/></svg>
+      تعلّمي
+    </button>
+    <button class="tab-btn" data-tab="search">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-3.8-3.8"/></svg>
+      ابحث
+    </button>
+    <button class="tab-btn" data-tab="docs">
+      <svg viewBox="0 0 24 24"><rect x="3" y="5" width="14" height="14" rx="2"/><path d="m21 8-4 3 4 3z"/></svg>
+      وثائقيات
+    </button>
+    <button class="tab-btn" data-tab="space">
+      <svg viewBox="0 0 24 24"><path d="M20.8 8.6c0 5-8.8 10.6-8.8 10.6S3.2 13.6 3.2 8.6a4.8 4.8 0 0 1 8.8-2.6 4.8 4.8 0 0 1 8.8 2.6Z"/></svg>
+      مساحتي
+    </button>
+  </div>
+
+  <div class="content" id="content"></div>
+</div>
+
+<script>
+const LEARN = [
+  // عن طفلك — حسب المرحلة
+  {type:'a', icon:'👶', badge:'0-2 سنة', tag:'حديثي الولادة', title:'أول 90 يوم: كيف بناء رضيعك', desc:'دليل عملي مبني على أبحاث النمو العصبي يفكك رموز أنواع البكاء المختلفة والاستجابة لها بثقة.', meta:'10 دقائق قراءة', author:'د. سارة المحطاني', channel:'نشرة حضانة'},
+  {type:'b', icon:'🎥', badge:'3-6 سنوات', tag:'الطفولة المبكرة', title:'الحزم بلا صراخ: أسلوب عملي', desc:'خطوات مجربة لوضع حدود واضحة لطفلك مع الحفاظ على الدفء والاتصال العاطفي بينكما.', meta:'18 دقيقة فيديو', author:'نورة العتيبي', channel:'بودكاست أمهات بثقة'},
+  {type:'c', icon:'📱', badge:'كل الأعمار', tag:'الطفولة المبكرة', title:'متى تقلقين فعلاً بشأن الشاشات؟', desc:'مراجعة لأحدث الدراسات حول وقت الشاشة، مع معايير علمية بدل الأرقام المخيفة العامة.', meta:'12 دقيقة قراءة', author:'ليند الدوسري', channel:'نشرة حضانة'},
+  {type:'a', icon:'🧠', badge:'7-12 سنة', tag:'المدرسة', title:'محادثات صعبة تحتاجها هذه المرحلة', desc:'كيف تبدأين حوارًا هادئًا حول الصداقات، الضغط الدراسي، أو التغيرات الجسدية دون توتر.', meta:'22 دقيقة بودكاست', author:'د. سارة المحطاني', channel:'بودكاست أمهات بثقة'},
+  {type:'b', icon:'🌱', badge:'مراهقة', tag:'المراهقة', title:'حين يبتعد عنك، ماذا تفعلين؟', desc:'فهم استقلالية المراهق كخطوة نمو طبيعية، لا رفض لكِ، مع أمثلة من أمهات حقيقيات.', meta:'15 دقيقة قراءة', author:'ريم الشهري', channel:'نشرة حضانة'},
+  // عنكِ أنتِ — مو بس عن الطفل
+  {type:'c', icon:'🧭', badge:'هويتك', tag:'هويتك', title:'كيف أنتِ غير أمّك أصلاً', desc:'حلقة عن استعادة قطعة منك ضاعت وسط الحفاضات والجدول اليومي، من غير ذنب.', meta:'20 دقيقة بودكاست', author:'هند الزهراني', channel:'بودكاست غير أمي'},
+  {type:'b', icon:'💛', badge:'علاقتك', tag:'علاقتك', title:'زواجكم تغيّر، وهذا طبيعي', desc:'نقش تحسّنين إليه بعدتما بعد الأطفال، وشلون ترجعين لبعض بخطوات بسيطة وواقعية.', meta:'14 دقيقة قراءة', author:'نورة الحربي', channel:'نشرة إنك'},
+  {type:'a', icon:'💼', badge:'شغلك', tag:'شغلك', title:'رجعتِ الشغل؟ سيبي تأنيب الضمير', desc:'كيف توازنين بين طموحك المهني وحضورك كأم، بدون ما تحسين إنك مقصّرة في الاثنين.', meta:'11 دقيقة قراءة', author:'د. نجد العنزي', channel:'مصدر مطّلع'},
+  {type:'c', icon:'🫀', badge:'جسمك وصحتك', tag:'جسمك وصحتك', title:'جسمك بعد الولادة: كلام بصراحة', desc:'حوار مباشر عن التغيرات الجسدية بعد الحمل، بدون فلاتر أو مقارنات مع أحد.', meta:'16 دقيقة فيديو', author:'د. ريم المريّم', channel:'بودكاست غير أمي'},
+];
+
+const RESEARCH_INTRO_SHOWN = {val:false};
+const RESULTS = [
+  {lang:'EN', orig:'Screen Time and Toddler Sleep Quality: A Longitudinal Review', title:'وقت الشاشة وجودة نوم الأطفال الصغار: مراجعة طولية المدى', summary:'تشير المراجعة إلى أن التوقيت أهم من المدة — الشاشات قبل النوم بساعة ترتبط بتأخر النوم أكثر من إجمالي الساعات اليومية. الخلاصة العملية: ركزي على "الساعة الذهبية" قبل النوم أكثر من عدد الدقائق.', src:'مجلة طب الأطفال التنموي (نموذج توضيحي)'},
+  {lang:'FR', orig:"Le bilinguisme précoce et le développement cognitif de l'enfant", title:'ثنائية اللغة المبكرة والتطور المعرفي للطفل', summary:'الأطفال الذين يتعرضون للغتين قبل سن الخامسة يظهرون مرونة معرفية أعلى لاحقًا، دون تأخر ملحوظ في أي من اللغتين إذا استمر التعرض المنتظم لكلتيهما.', src:'أرشيف علم النفس التنموي (نموذج توضيحي)'},
+  {lang:'DE', orig:'Elterliche Selbstfürsorge als Prädiktor für kindliches Wohlbefinden', summary:'رفاهية الوالد النفسية تتنبأ باستقرار الطفل العاطفي أكثر من أي أسلوب تربوي محدد — أي أن اعتناءك بنفسك ليس رفاهية، بل جزء من التربية.', title:'رعاية الوالد لنفسه كمؤشر رفاهية الطفل', src:'دورية الأسرة والصحة النفسية (نموذج توضيحي)'},
+];
+
+function lcard(item){
+  const initial = item.author.replace('د. ','').charAt(0);
+  return `<div class="lcard type-${item.type}">
+    <div class="lcard-thumb">
+      <span class="badge">${item.badge}</span>
+      ${item.icon}
+    </div>
+    <div class="lcard-body">
+      <h3>${item.title}</h3>
+      <p>${item.desc}</p>
+      <div class="lcard-byline">
+        <div class="lcard-avatar">${initial}</div>
+        <div class="lcard-byline-text"><b>${item.author}</b> · في ${item.channel} · ${item.meta}</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+let learnFilter = 'الكل';
+function learnCardsMarkup(){
+  const list = learnFilter === 'الكل' ? LEARN : LEARN.filter(i => i.tag === learnFilter);
+  return list.map(lcard).join('') || '<p class="section-sub">ما فيه محتوى بالتصنيف بعد — قريبًا.</p>';
+}
+function filterLearn(tag){
+  learnFilter = tag;
+  document.querySelectorAll('#learnChips .chip').forEach(c => c.classList.toggle('active', c.dataset.tag === tag));
+  document.getElementById('learnCards').innerHTML = learnCardsMarkup();
+}
+
+function renderLearn(){
+  learnFilter = 'الكل';
+  return `
+  <h2 class="section-title">تعلّمي</h2>
+  <p class="section-sub">مو بس عن طفلك — فيه محتوى عن اللي مثلك 💛</p>
+  <div class="chips" id="learnChips">
+    <div class="chip active" data-tag="الكل" onclick="filterLearn('الكل')">الكل</div>
+    <div class="chip" data-tag="حديثي الولادة" onclick="filterLearn('حديثي الولادة')">حديثي الولادة</div>
+    <div class="chip" data-tag="الطفولة المبكرة" onclick="filterLearn('الطفولة المبكرة')">الطفولة المبكرة</div>
+    <div class="chip" data-tag="المدرسة" onclick="filterLearn('المدرسة')">المدرسة</div>
+    <div class="chip" data-tag="المراهقة" onclick="filterLearn('المراهقة')">المراهقة</div>
+    <div class="chip chip-self" data-tag="هويتك" onclick="filterLearn('هويتك')">✦ هويتك</div>
+    <div class="chip chip-self" data-tag="علاقتك" onclick="filterLearn('علاقتك')">✦ علاقتك</div>
+    <div class="chip chip-self" data-tag="شغلك" onclick="filterLearn('شغلك')">✦ شغلك</div>
+    <div class="chip chip-self" data-tag="جسمك وصحتك" onclick="filterLearn('جسمك وصحتك')">✦ جسمك وصحتك</div>
+  </div>
+  <div id="learnCards">${learnCardsMarkup()}</div>
+  `;
+}
+
+function rcard(item){
+  return `<div class="rcard">
+    <span class="rcard-lang">${item.lang} → AR</span>
+    <h3>${item.title}</h3>
+    <p class="orig-title">${item.orig}</p>
+    <p class="summary">${item.summary}</p>
+    <div class="rcard-foot">
+      <span>${item.src}</span>
+      <a href="#">اقرأ الأصل ←</a>
+    </div>
+  </div>`;
+}
+
+function renderSearch(){
+  return `
+  <h2 class="section-title">ابحث</h2>
+  <p class="section-sub">سؤال يدور في راسك من المجرّد التبويب، وخلي العالم يجاوبك بالعربي.</p>
+  <div class="search-box">
+    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-3.8-3.8"/></svg>
+    <input placeholder="مثال: نوم الأطفال، القلق عند المراهقين..." value="وقت الشاشة والنوم">
+  </div>
+  <div class="translate-toggle">
+    <span>ترجم النتائج للعربية تلقائيًا</span>
+    <div class="switch" onclick="this.classList.toggle('off')"></div>
+  </div>
+  <div class="demo-note">هذه نتائج توضيحية لعرض فكرة المنتج — في النسخة الفعلية سيتم الجلب من قواعد أبحاث حقيقية وترجمتها ولحظيًا.</div>
+  ${RESULTS.map(rcard).join('')}
+  `;
+}
+
+const POSTS = [
+  {name:'أم مجهولة', initial:'أ', time:'قبل ٣ ساعات', text:'اليوم صرخت بوجه ابني وبعدها حسيت بذنب كبير. حابة بس أسمع إني من المجموعة اللي بتصير معها ولاش.', likes:24, replies:9},
+  {name:'أم مجهولة', initial:'أ', time:'أمس', text:'مرت سنة على طلاقي وأول مرة أحس إني رجعت لنفسي شوي. الطريق طويل بس ماشية فيه.', likes:41, replies:14},
+];
+
+function post(p){
+  return `<div class="post">
+    <div class="post-head">
+      <div class="avatar">${p.initial}</div>
+      <div>
+        <div class="post-name">${p.name}</div>
+        <div class="post-time">${p.time}</div>
+      </div>
+    </div>
+    <p>${p.text}</p>
+    <div class="post-foot"><span>♡ ${p.likes}</span><span>💬 ${p.replies} ردود داعمة</span></div>
+  </div>`;
+}
+
+function renderSpace(){
+  return `
+  <h2 class="section-title">مساحتي</h2>
+  <p class="section-sub">ما فيه حكم هنا ولا "أنا أفضل منك". بس أنتِ، وناس تفهم بالضبط.</p>
+  <div class="mood-row">
+    <button class="mood-btn" data-mood="tired" onclick="selectMood('tired')">😴</button>
+    <button class="mood-btn" data-mood="sad" onclick="selectMood('sad')">😔</button>
+    <button class="mood-btn" data-mood="neutral" onclick="selectMood('neutral')">😐</button>
+    <button class="mood-btn" data-mood="happy" onclick="selectMood('happy')">😊</button>
+    <button class="mood-btn" data-mood="motivated" onclick="selectMood('motivated')">💪</button>
+  </div>
+
+  <div class="player" id="player">
+    <div class="player-top">
+      <span class="player-label" id="playerLabel">شي حاسة الملم، اختاري مزاجك، وخلينا نضبط الجو لك 🎧</span>
+    </div>
+    <div class="lang-toggle" id="trackLangToggle" style="display:none;">
+      <button class="lang-chip active" data-lang="ar" onclick="setTrackLang('ar')">عربي</button>
+      <button class="lang-chip" data-lang="en" onclick="setTrackLang('en')">English</button>
+    </div>
+    <div class="player-title" id="playerTitle"></div>
+    <div class="player-row">
+      <button class="play-btn" id="playBtn" onclick="togglePlay()">
+        <svg viewBox="0 0 24 24" fill="currentColor" id="playIcon"><path d="M8 5v14l11-7z"/></svg>
+      </button>
+      <div class="eq" id="eq">
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+    </div>
+    <div class="vol-row">
+      <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M5 9v6h4l5 5V4L9 9H5Z"/></svg>
+      <input type="range" min="0" max="1" step="0.01" value="0.5" id="volSlider" oninput="setVolume(this.value)">
+    </div>
+  </div>
+
+  <div id="bookPanel"></div>
+
+  <div class="affirm">"تعبكِ ما يقيس من حبّكِ. من دونٍ إنكِ تعطين أكثر من طاقتك أصلًا 🤍"</div>
+  ${POSTS.map(post).join('')}
+  <button class="share-btn">شاركي الحين بخاطرك، بدون اسم</button>
+  `;
+}
+
+/* ---------- mood → music + books — about HER, not just the baby ---------- */
+const MOODS = {
+  tired: {emoji:'😴', label:'متعبة', type:'rain',
+    trackAr:'صوت مطر هادئ للاسترخاء', trackEn:'Soft Rain for Deep Rest',
+    books:[
+      {lang:'AR', title:'لأنك تتأنى: عن الأمومة وأشباحها', author:'إيمان مرسال', blurb:'كتابة صادقة تسمح لك بالإذن بأن تكوني أمًا مرهقة ومربكة، لا مثالية دائمًا.'},
+      {lang:'EN', title:'Rest Is Resistance', author:'Tricia Hersey', blurb:"On reclaiming rest as your right, not something you earn once everyone else is taken care of."},
+    ]},
+  sad: {emoji:'😔', label:'حزينة', type:'pad',
+    trackAr:'لحظة بيانو دافئة', trackEn:'Warm Piano Comfort',
+    books:[
+      {lang:'AR', title:'لماذا لا أثق', author:'سارة النجار', blurb:'عن تصالحك مع ذاتك وتعاملك مع جرح قديمة، لا عن تربية أفضل.'},
+      {lang:'EN', title:'Operating Instructions', author:'Anne Lamott', blurb:"A brutally honest, funny memoir of her own first year of motherhood — permission to not have it together."},
+    ]},
+  neutral: {emoji:'😐', label:'عادية', type:'air',
+    trackAr:'موسيقى هادئة للتركيز', trackEn:'Calm Focus Ambience',
+    books:[
+      {lang:'AR', title:'كأصبحتِ أما هادئة', author:'كديري ياسمين المرس', blurb:'عن استعادة هدوئك الداخلي أنتِ، لا عن ضبط سلوك أحد.'},
+      {lang:'EN', title:'Matrescence', author:'Lucy Jones', blurb:"On the profound, under-discussed identity shift of becoming a mother — the change in you."},
+    ]},
+  happy: {emoji:'😊', label:'مبسوطة', type:'arp',
+    trackAr:'لحن بسيط ومنعش', trackEn:'Bright Little Melody',
+    books:[
+      {lang:'AR', title:'كأصبحتِ أما هادئة', author:'كديري ياسمين المرس', blurb:'فصل عن استمتاعك أنتِ برحلتك، احتفظي بهذا الشعور واحتفلي عليه.'},
+      {lang:'EN', title:'Like a Mother', author:'Angela Garbes', blurb:"A celebration of what her body and mind actually went through — not the baby's milestones."},
+    ]},
+  motivated: {emoji:'💪', label:'محفزة', type:'arp-fast',
+    trackAr:'إيقاع نشيط وخفيف', trackEn:'Light Energetic Beat',
+    books:[
+      {lang:'AR', title:'لأنك تتأنى: عن الأمومة وأشباحها', author:'إيمان مرسال', blurb:'مجيلي طاقتك الحين نحن مصالحة صادقة مع نفسك، لا محو الأمان.'},
+      {lang:'EN', title:'Untamed', author:'Glennon Doyle', blurb:"About reclaiming who she was before everyone needed something from her."},
+    ]},
+};
+
+let selectedMood = null;
+let actx = null, nodes = [], playing = false, eqTimer = null;
+
+function ensureCtx(){ if(!actx) actx = new (window.AudioContext||window.webkitAudioContext)(); }
+
+function stopAll(){
+  nodes.forEach(n=>{ try{ n.stop && n.stop(); }catch(e){} try{ n.disconnect && n.disconnect(); }catch(e){} });
+  nodes = []; playing = false;
+  if(eqTimer){ clearInterval(eqTimer); eqTimer = null; }
+  document.querySelectorAll('#eq span').forEach(s=> s.style.height = '20%');
+  const icon = document.getElementById('playIcon');
+  if(icon) icon.innerHTML = '<path d="M8 5v14l11-7z"/>';
+}
+
+function makeNoiseBuffer(){
+  const size = 2 * actx.sampleRate;
+  const buffer = actx.createBuffer(1, size, actx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for(let i=0;i<size;i++) data[i] = Math.random()*2-1;
+  return buffer;
+}
+
+function playMood(type){
+  ensureCtx(); stopAll();
+  const master = actx.createGain();
+  master.gain.value = parseFloat(document.getElementById('volSlider').value);
+  master.connect(actx.destination);
+  nodes.push(master);
+
+  if(type==='rain'){
+    const src = actx.createBufferSource(); src.buffer = makeNoiseBuffer(); src.loop = true;
+    const filter = actx.createBiquadFilter(); filter.type='lowpass'; filter.frequency.value=700;
+    src.connect(filter); filter.connect(master); src.start();
+    nodes.push(src, filter);
+  } else if(type==='pad'){
+    [220,224,330].forEach(f=>{
+      const o = actx.createOscillator(); o.type='sine'; o.frequency.value=f;
+      const g = actx.createGain(); g.gain.value=0.1;
+      o.connect(g); g.connect(master); o.start();
+      nodes.push(o,g);
+    });
+  } else if(type==='air'){
+    const src = actx.createBufferSource(); src.buffer = makeNoiseBuffer(); src.loop = true;
+    const filter = actx.createBiquadFilter(); filter.type='bandpass'; filter.frequency.value=1800; filter.Q.value=0.6;
+    const g = actx.createGain(); g.gain.value=0.13;
+    src.connect(filter); filter.connect(g); g.connect(master); src.start();
+    nodes.push(src, filter, g);
+  } else if(type==='arp' || type==='arp-fast'){
+    const notes = [392,440,523.25,587.33,659.25];
+    let i = 0;
+    const speed = type==='arp-fast' ? 220 : 380;
+    const g = actx.createGain(); g.gain.value=0.16; g.connect(master);
+    nodes.push(g);
+    const arpInterval = setInterval(()=>{
+      if(!playing) return;
+      const o = actx.createOscillator(); o.type='triangle'; o.frequency.value = notes[i % notes.length];
+      const eg = actx.createGain();
+      eg.gain.setValueAtTime(0.2, actx.currentTime);
+      eg.gain.exponentialRampToValueAtTime(0.001, actx.currentTime+0.3);
+      o.connect(eg); eg.connect(g); o.start(); o.stop(actx.currentTime+0.32);
+      i++;
+    }, speed);
+    nodes.push({stop:()=>clearInterval(arpInterval), disconnect:()=>{}});
+  }
+
+  playing = true;
+  const icon = document.getElementById('playIcon');
+  if(icon) icon.innerHTML = '<rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/>';
+  eqTimer = setInterval(()=>{
+    document.querySelectorAll('#eq span').forEach(s=>{
+      s.style.height = (playing ? (15 + Math.random()*85) : 20) + '%';
+    });
+  }, 180);
+}
+
+function togglePlay(){
+  if(!selectedMood) return;
+  if(playing) stopAll();
+  else playMood(MOODS[selectedMood].type);
+}
+
+function setVolume(v){ if(nodes[0]) nodes[0].gain.value = parseFloat(v); }
+
+function renderBooks(books){
+  const panel = document.getElementById('bookPanel');
+  panel.innerHTML = `
+    <p class="section-sub" style="margin:16px 0 8px;">📚 كتب عنك أنتِ — لا عن طفلك فقط</p>
+    ${books.map(b=>`
+      <div class="book-card">
+        <div class="book-cover">📖</div>
+        <div class="book-info">
+          <span class="book-lang ${b.lang==='EN'?'en':''}">${b.lang}</span>
+          <h4>${b.title}</h4>
+          <p><b>${b.author}</b> — ${b.blurb}</p>
+        </div>
+      </div>`).join('')}
+    <div class="demo-note" style="margin-top:2px;">كتب حقيقية لكن على الفكرة — النسخة الفعلية تربط مباشرة بمتاجر/مكتبات لشرائها أو قراءتها.</div>
+  `;
+}
+
+let currentTrackLang = 'ar';
+function setTrackLang(lang){
+  currentTrackLang = lang;
+  document.querySelectorAll('.lang-chip').forEach(c=>c.classList.toggle('active', c.dataset.lang===lang));
+  if(selectedMood){
+    const m = MOODS[selectedMood];
+    document.getElementById('playerTitle').textContent = lang==='ar' ? m.trackAr : m.trackEn;
+  }
+}
+
+function selectMood(key){
+  selectedMood = key; stopAll();
+  document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('selected'));
+  const btn = document.querySelector(`.mood-btn[data-mood="${key}"]`);
+  if(btn) btn.classList.add('selected');
+  const m = MOODS[key];
+  const player = document.getElementById('player');
+  player.classList.add('show');
+  document.getElementById('trackLangToggle').style.display = 'flex';
+  document.getElementById('playerLabel').textContent = `بناءً على إنك تشعرين بـ ${m.emoji} ${m.label}`;
+  document.getElementById('playerTitle').textContent = currentTrackLang==='ar' ? m.trackAr : m.trackEn;
+  renderBooks(m.books);
+}
+
+/* ---------- tabs ---------- */
+/* ---------- documentaries ---------- */
+const DOC_RESULTS = [
+  {lang:'EN', platform:'YouTube', channel:'Center on the Developing Child, Harvard', orig:'How Brain Architecture Is Built', dur:'٥ دقائق',
+    title:'كيف يُبنى دماغ طفلك في السنوات الأولى', summary:'فيديو توضيحي من مركز أبحاث بجامعة هارفارد يشرح بصريًا كيف تشكّل التفاعلات اليومية البسيطة بنية دماغ الطفل قبل عمر الخامسة.'},
+  {lang:'EN', platform:'Netflix', channel:'Netflix Originals', orig:'Babies', dur:'25 دقيقة/حلقة',
+    title:'Babies', summary:'سلسلة وثائقية تتابع أطفالًا حديثي الولادة في خمس قارات في أول عام من حياتهم، توضح كيف تتشكل قدراتهم الأولى بغض النظر عن الثقافة أو البلد.'},
+  {lang:'EN', platform:'BBC', channel:'BBC Documentaries', orig:'Child of Our Time', dur:'٦٠ دقيقة/حلقة',
+    title:'طفل زماننا', summary:'سلسلة بريطانية طويلة المدى تتابع نفس مجموعة الأطفال من الولادة حتى المراهقة، ترصد كيف تتشكل الطفل بين الجينات والتربية.'},
+  {lang:'EN', platform:'مستقل', channel:'أفلام سينمائية', orig:'The Business of Being Born', dur:'٨٥ دقيقة',
+    title:'عن ولادة الحياة', summary:'فيلم يراجع كيف تحولت الولادة في الغرب إلى إجراء طبي بحت، ويطرح أسئلة عن خيارات الأم في غرفة الولادة.'},
+  {lang:'FR', platform:'مستقل', channel:'أفلام سينمائية فرنسية', orig:'Être et Avoir', dur:'١٠٤ دقائق',
+    title:'أن تكون أو أن تكون', summary:'يوميات معلم في مدرسة ريفية فرنسية بصف واحد لكل الأعمار، تكشف كيف يتعلم الأطفال حين تُمنحهم مساحة وصبر حقيقيان.'},
+];
+
+const PLATFORM_STYLE = {
+  'YouTube':{bg:'#FF4D4D'}, 'Netflix':{bg:'#B23B3B'}, 'BBC':{bg:'#4C5B7A'}, 'مستقل':{bg:'var(--sage)'}
+};
+
+function docResultCard(d){
+  const pStyle = PLATFORM_STYLE[d.platform] || {bg:'var(--dustyblue)'};
+  return `<div class="doc-card">
+    <div class="doc-thumb alt">🎞️</div>
+    <div class="doc-info">
+      <span class="rcard-lang" style="margin-bottom:4px; background:${pStyle.bg};">${d.platform}</span>
+      <span class="rcard-lang" style="margin-bottom:4px; background:var(--ink-soft);">${d.lang} → AR</span>
+      <h4>${d.title}</h4>
+      <p style="font-style:italic; margin-bottom:4px;">${d.orig} — ${d.channel} · ${d.dur}</p>
+      <p>${d.summary}</p>
+    </div>
+  </div>`;
+}
+
+function renderDocs(){
+  return `
+  <h2 class="section-title">وثائقيات</h2>
+  <p class="section-sub">من يوتيوب لنتفليكس لغيرها — نجمعلها لك في مكان واحد، ونترجملها.</p>
+
+  <div class="search-box">
+    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-3.8-3.8"/></svg>
+    <input placeholder="مثال: نوم الرضيع، أساليب تربية حول العالم..." value="وثائقيات عن الولادة">
+  </div>
+  <div class="translate-toggle">
+    <span>ترجمة مدبلجة تلقائية للعربية</span>
+    <div class="switch" onclick="this.classList.toggle('off')"></div>
+  </div>
+  <div class="demo-note">نتائج توضيحية من مصادر ومنصات حقيقية — في النسخة الفعلية تُجلب من يوتيوب ونتفليكس وغيرها محظيًا حسب بحثك، ولمن لا تسمح بها شروط أي منصة.</div>
+  ${DOC_RESULTS.map(docResultCard).join('')}
+  `;
+}
+
+const RENDER = {learn: renderLearn, search: renderSearch, docs: renderDocs, space: renderSpace};
+const content = document.getElementById('content');
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    stopAll(); selectedMood = null;
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    content.scrollTop = 0;
+    content.innerHTML = RENDER[btn.dataset.tab]();
+  });
+});
+content.innerHTML = renderLearn();
+</script>
+
+</body>
+</html>
