@@ -17,8 +17,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="ar" dir="rtl" className={`${plex.variable} h-full antialiased`}>
-      <body className="min-h-full bg-paper text-charcoal">
+    <html lang="ar" dir="rtl" className={`${plex.variable} antialiased`}>
+      <body className="min-h-screen bg-paper text-charcoal">
         <header className="sticky top-0 z-40 w-full bg-paper/90 backdrop-blur lg:border-b lg:border-line">
           <div className="mx-auto flex h-14 max-w-6xl items-center gap-6 px-4 sm:px-6 lg:h-[72px] lg:px-8">
             <Link href="/" className="flex shrink-0 items-center gap-2">
