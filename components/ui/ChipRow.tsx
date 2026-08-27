@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { Tag } from "@/lib/supabase/types";
+import type { Section, Tag } from "@/lib/supabase/types";
 
 /**
  * Sub-filter chips scoped to a single تعلم section (عنك / تربيتك). `tags`
@@ -14,11 +14,11 @@ export function ChipRow({
 }: {
   tags: Tag[];
   activeTag?: string;
-  section: string;
+  section: Section;
   accent?: boolean;
 }) {
   return (
-    <div className="mb-1.5 flex gap-2 overflow-x-auto pb-3.5">
+    <div className="no-scrollbar mb-6 flex gap-2 overflow-x-auto pb-1">
       <Chip href={`/?section=${section}`} label="الكل" active={!activeTag} accent={accent} />
       {tags.map((tag) => (
         <Chip
@@ -44,22 +44,21 @@ function Chip({
   active: boolean;
   accent?: boolean;
 }) {
-  const base = "flex-none whitespace-nowrap rounded-full border px-3.5 py-1.5 text-[12.5px] font-medium";
+  const base =
+    "flex-none whitespace-nowrap rounded-lg px-3.5 py-1.5 text-[13px] font-medium transition-colors";
   if (active) {
     return (
       <Link
         href={href}
-        className={`${base} ${accent ? "border-gold bg-gold text-ink" : "border-ink bg-ink text-white"}`}
+        aria-current="true"
+        className={`${base} ${accent ? "bg-gold text-white" : "bg-ink text-white"}`}
       >
         {label}
       </Link>
     );
   }
   return (
-    <Link
-      href={href}
-      className={`${base} bg-white ${accent ? "border-gold text-[#8B4A36]" : "border-line text-ink-soft"}`}
-    >
+    <Link href={href} className={`${base} bg-tint text-ink-soft hover:text-ink`}>
       {label}
     </Link>
   );

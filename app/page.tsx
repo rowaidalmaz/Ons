@@ -2,7 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { ChipRow } from "@/components/ui/ChipRow";
 import { SectionTabs } from "@/components/ui/SectionTabs";
 import { ContentCard } from "@/components/ui/ContentCard";
-import type { ContentFormat, Tag, TagCategory } from "@/lib/supabase/types";
+import type { ContentFormat, Section, Tag, TagCategory } from "@/lib/supabase/types";
 
 type ContentRow = {
   id: string;
@@ -15,12 +15,12 @@ type ContentRow = {
   channels: { name: string } | null;
 };
 
-const SECTION_CATEGORY: Record<string, TagCategory> = {
+const SECTION_CATEGORY: Record<Section, TagCategory> = {
   about: "about_her",
   parenting: "age_stage",
 };
 
-const SECTION_SUBTITLE: Record<string, string> = {
+const SECTION_SUBTITLE: Record<Section, string> = {
   about: "مو بس عن طفلك — هذا القسم عنكِ أنتِ: هويتك، علاقتك، شغلك، وجسمك 💛",
   parenting: "محتوى عن طفلك حسب مرحلته العمرية، من الولادة إلى المراهقة.",
 };
@@ -31,8 +31,7 @@ export default async function LearnPage({
   searchParams: Promise<{ section?: string; tag?: string }>;
 }) {
   const params = await searchParams;
-  const tag = params.tag;
-  const section = params.section === "parenting" ? "parenting" : "about";
+  const section: Section = params.section === "parenting" ? "parenting" : "about";
   const category = SECTION_CATEGORY[section];
 
   const supabase = await createClient();
@@ -43,6 +42,11 @@ export default async function LearnPage({
     .order("sort_order");
 
   const sectionTags = ((allTags as Tag[]) ?? []).filter((t) => t.category === category);
+
+  // Only honour ?tag= when it belongs to the active section — a stale tag left
+  // in the URL from the other section would otherwise show an empty list under
+  // a highlighted "الكل" chip.
+  const tag = sectionTags.some((t) => t.slug === params.tag) ? params.tag : undefined;
 
   let query = supabase
     .from("content")
@@ -61,20 +65,23 @@ export default async function LearnPage({
 
   return (
     <div>
-      <h2 className="mt-0.5 mb-1 text-xl font-extrabold text-ink">تعلم</h2>
-      <p className="mb-4 text-[12.5px] leading-7 text-ink-soft">{SECTION_SUBTITLE[section]}</p>
+      <h1 className="mb-2 text-3xl font-bold tracking-tight text-ink lg:text-[34px]">تعلم</h1>
+      <p className="mb-6 max-w-xl text-[14px] leading-7 text-ink-soft">
+        {SECTION_SUBTITLE[section]}
+      </p>
 
       <SectionTabs active={section} />
       <ChipRow tags={sectionTags} activeTag={tag} section={section} accent={section === "about"} />
 
-      {error && <p className="text-[12.5px] text-ink-soft">تعذّر تحميل المحتوى الآن.</p>}
+      {error && <p className="text-[14px] text-ink-soft">تعذّر تحميل المحتوى الآن.</p>}
       {content?.length === 0 && (
-        <p className="text-[12.5px] text-ink-soft">ما فيه محتوى بالتصنيف بعد — قريبًا.</p>
+        <p className="text-[14px] text-ink-soft">ما فيه محتوى بالتصنيف بعد — قريبًا.</p>
       )}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-x-6 gap-y-9 sm:grid-cols-2 lg:grid-cols-3">
         {content?.map((item) => (
           <ContentCard
             key={item.id}
+            id={item.id}
             title={item.title}
             description={item.description}
             icon={item.icon}

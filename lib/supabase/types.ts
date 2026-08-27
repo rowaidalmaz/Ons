@@ -1,5 +1,8 @@
 export type ContentFormat = "article" | "audio" | "video";
 export type TagCategory = "age_stage" | "about_her";
+
+/** A تعلم section: عنك (about her) or تربيتك (parenting by age stage). */
+export type Section = "about" | "parenting";
 export type DocPlatform = "youtube" | "netflix" | "bbc" | "independent";
 export type PostStatus = "pending" | "approved" | "rejected" | "flagged_crisis";
 
@@ -110,4 +113,39 @@ export interface FeatureFlagRow {
   key: string;
   enabled: boolean;
   description: string | null;
+}
+
+export type BookmarkKind = "content" | "research" | "documentary";
+
+export interface BookmarkRow {
+  id: string;
+  collection_id: string;
+  owner_hash: string;
+  kind: BookmarkKind;
+  item_id: string;
+  title: string;
+  subtitle: string | null;
+  href: string | null;
+  emoji: string | null;
+  badge: string | null;
+  created_at: string;
+}
+
+/** One day on the مساحتي check-in trail, as the client handles it. */
+export interface MoodCheckin {
+  /** 'YYYY-MM-DD' — the mother's local (Riyadh) day. */
+  checked_on: string;
+  mood_slug: string;
+}
+
+/** A bookmark as the client/UI handles it — no owner/collection identifiers. */
+export interface SavedItem {
+  id?: string;
+  kind: BookmarkKind;
+  itemId: string;
+  title: string;
+  subtitle?: string | null;
+  href?: string | null;
+  emoji?: string | null;
+  badge?: string | null;
 }
