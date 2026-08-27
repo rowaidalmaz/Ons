@@ -18,11 +18,11 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="ar" dir="rtl" className={`${cairo.variable} h-full antialiased`}>
-      <body className="min-h-full flex justify-center bg-[#7A4130]">
-        <div className="app-shell">
-          <header className="relative overflow-hidden px-6 pt-7 pb-5 text-[#F3EEE3] [background:radial-gradient(120%_160%_at_20%_-10%,#C97B5D_0%,#9C4E38_55%,#6B3324_100%)]">
-            <div className="pointer-events-none absolute inset-0 [background:radial-gradient(220px_140px_at_85%_0%,rgba(240,184,160,0.35),transparent_70%)]" />
-            <div className="relative flex items-center gap-2.5">
+      <body className="min-h-full bg-paper">
+        <header className="relative overflow-hidden text-[#F3EEE3] [background:radial-gradient(120%_160%_at_20%_-10%,#C97B5D_0%,#9C4E38_55%,#6B3324_100%)]">
+          <div className="pointer-events-none absolute inset-0 [background:radial-gradient(320px_200px_at_85%_0%,rgba(240,184,160,0.35),transparent_70%)]" />
+          <div className="relative mx-auto max-w-6xl px-4 pb-6 pt-8 sm:px-6 lg:px-8">
+            <div className="flex items-center gap-2.5">
               <svg
                 className="h-8 w-8 shrink-0"
                 viewBox="0 0 24 24"
@@ -40,16 +40,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
                 أُنس
               </span>
             </div>
-            <p className="relative mt-1.5 text-[13px] leading-7 text-[#F3E2D6]">
+            <p className="mt-1.5 max-w-md text-[13px] leading-7 text-[#F3E2D6]">
               تعبانة الملم، عادي. أُنس ما يضويك في الطريق، بس يحن عليك 🌙
             </p>
-          </header>
-          <FriezeStrip />
-          <TabBar />
-          <main className="flex-1 overflow-y-auto px-4.5 pb-7 pt-4.5">
-            {children}
-          </main>
-        </div>
+          </div>
+        </header>
+        <FriezeStrip />
+        <TabBar />
+        <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">{children}</main>
       </body>
     </html>
   );

@@ -84,26 +84,3 @@ a:focus-visible {
     0 8px;
 }
 
-/* real phones/tablets: edge-to-edge content, no floating-card chrome */
-.app-shell {
-  width: 100%;
-  max-width: 480px;
-  margin: 0 auto;
-  min-height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  background: var(--paper);
-}
-@media (min-width: 768px) {
-  .app-shell {
-    max-width: 520px;
-    min-height: auto;
-    margin-top: 28px;
-    margin-bottom: 28px;
-    border-radius: 28px;
-    overflow: hidden;
-    box-shadow:
-      0 30px 70px rgba(74, 41, 30, 0.25),
-      0 0 0 1px rgba(74, 41, 30, 0.06);
-  }
-}

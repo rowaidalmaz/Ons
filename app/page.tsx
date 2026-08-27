@@ -57,18 +57,20 @@ export default async function LearnPage({
       {content?.length === 0 && (
         <p className="text-[12.5px] text-ink-soft">ما فيه محتوى بالتصنيف بعد — قريبًا.</p>
       )}
-      {content?.map((item) => (
-        <ContentCard
-          key={item.id}
-          title={item.title}
-          description={item.description}
-          icon={item.icon}
-          format={item.format}
-          durationLabel={item.duration_label}
-          authorName={item.contributors?.name ?? ""}
-          channelName={item.channels?.name ?? ""}
-        />
-      ))}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {content?.map((item) => (
+          <ContentCard
+            key={item.id}
+            title={item.title}
+            description={item.description}
+            icon={item.icon}
+            format={item.format}
+            durationLabel={item.duration_label}
+            authorName={item.contributors?.name ?? ""}
+            channelName={item.channels?.name ?? ""}
+          />
+        ))}
+      </div>
     </div>
   );
 }

@@ -26,7 +26,7 @@ export function ContentCard({
   const initial = authorName.replace("د. ", "").charAt(0);
 
   return (
-    <article className="mb-3.5 overflow-hidden rounded-2xl border border-line bg-white">
+    <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-white">
       <div
         className="relative flex h-[110px] items-center justify-center text-[30px] after:absolute after:inset-0 after:[background:linear-gradient(180deg,transparent_40%,rgba(0,0,0,0.18))]"
         style={{ background: THUMB_GRADIENT[format] }}
@@ -36,10 +36,10 @@ export function ContentCard({
         </span>
         {icon}
       </div>
-      <div className="px-3.5 pb-3.5 pt-3">
+      <div className="flex flex-1 flex-col px-3.5 pb-3.5 pt-3">
         <h3 className="mb-2 text-[15px] leading-6 text-ink">{title}</h3>
         <p className="mb-2.5 text-[12.5px] leading-6 text-[#6B5847]">{description}</p>
-        <div className="flex items-center gap-2 border-t border-line pt-2.5">
+        <div className="mt-auto flex items-center gap-2 border-t border-line pt-2.5">
           <div className="flex h-6.5 w-6.5 flex-none items-center justify-center rounded-full bg-paper-deep text-[11px] font-bold text-ink">
             {initial}
           </div>

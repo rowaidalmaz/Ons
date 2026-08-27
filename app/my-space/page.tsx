@@ -29,7 +29,7 @@ export default async function MySpacePage() {
   }
 
   return (
-    <div>
+    <div className="mx-auto max-w-2xl">
       <h2 className="mt-0.5 mb-1 text-xl font-extrabold text-ink">مساحتي</h2>
       <p className="mb-4 text-[12.5px] leading-7 text-ink-soft">
         ما فيه حكم هنا ولا &quot;أنا أفضل منك&quot;. بس أنتِ، وناس تفهم بالضبط.
