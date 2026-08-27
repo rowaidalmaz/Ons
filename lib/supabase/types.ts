@@ -131,6 +131,13 @@ export interface BookmarkRow {
   created_at: string;
 }
 
+/** One day on the مساحتي check-in trail, as the client handles it. */
+export interface MoodCheckin {
+  /** 'YYYY-MM-DD' — the mother's local (Riyadh) day. */
+  checked_on: string;
+  mood_slug: string;
+}
+
 /** A bookmark as the client/UI handles it — no owner/collection identifiers. */
 export interface SavedItem {
   id?: string;
