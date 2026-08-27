@@ -36,6 +36,7 @@ export default async function SearchPage({
         {results?.map((r) => (
           <ResearchResultCard
             key={r.id}
+            id={r.id}
             sourceLanguage={r.source_language}
             titleAr={r.title_ar}
             originalTitle={r.original_title}

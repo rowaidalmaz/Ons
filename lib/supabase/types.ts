@@ -114,3 +114,31 @@ export interface FeatureFlagRow {
   enabled: boolean;
   description: string | null;
 }
+
+export type BookmarkKind = "content" | "research" | "documentary";
+
+export interface BookmarkRow {
+  id: string;
+  collection_id: string;
+  owner_hash: string;
+  kind: BookmarkKind;
+  item_id: string;
+  title: string;
+  subtitle: string | null;
+  href: string | null;
+  emoji: string | null;
+  badge: string | null;
+  created_at: string;
+}
+
+/** A bookmark as the client/UI handles it — no owner/collection identifiers. */
+export interface SavedItem {
+  id?: string;
+  kind: BookmarkKind;
+  itemId: string;
+  title: string;
+  subtitle?: string | null;
+  href?: string | null;
+  emoji?: string | null;
+  badge?: string | null;
+}

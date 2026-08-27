@@ -1,17 +1,7 @@
 "use client";
 
 import { useState } from "react";
-
-const DEVICE_ID_KEY = "uns_anon_device_id";
-
-function getDeviceId(): string {
-  let id = localStorage.getItem(DEVICE_ID_KEY);
-  if (!id) {
-    id = crypto.randomUUID();
-    localStorage.setItem(DEVICE_ID_KEY, id);
-  }
-  return id;
-}
+import { getDeviceId } from "@/lib/device";
 
 type SubmitState =
   | { kind: "idle" }

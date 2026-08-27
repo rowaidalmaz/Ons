@@ -36,6 +36,7 @@ export default async function DocumentariesPage({
         {docs?.map((d) => (
           <DocumentaryCard
             key={d.id}
+            id={d.id}
             title={d.title}
             originalTitle={d.original_title}
             channelOrStudio={d.channel_or_studio}
@@ -43,6 +44,7 @@ export default async function DocumentariesPage({
             description={d.description}
             platform={d.platform}
             languageBadge={d.language_badge}
+            externalUrl={d.external_url}
           />
         ))}
       </div>

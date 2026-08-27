@@ -1,4 +1,5 @@
 import type { DocPlatform } from "@/lib/supabase/types";
+import { BookmarkButton } from "@/components/bookmarks/BookmarkButton";
 
 const PLATFORM_LABEL: Record<DocPlatform, string> = {
   youtube: "YouTube",
@@ -15,6 +16,7 @@ const PLATFORM_BG: Record<DocPlatform, string> = {
 };
 
 export function DocumentaryCard({
+  id,
   title,
   originalTitle,
   channelOrStudio,
@@ -22,7 +24,9 @@ export function DocumentaryCard({
   description,
   platform,
   languageBadge,
+  externalUrl,
 }: {
+  id: string;
   title: string;
   originalTitle: string;
   channelOrStudio: string;
@@ -30,6 +34,7 @@ export function DocumentaryCard({
   description: string;
   platform: DocPlatform;
   languageBadge: string;
+  externalUrl: string | null;
 }) {
   return (
     <div className="flex gap-3.5 rounded-2xl p-2 transition-colors hover:bg-tint">
@@ -40,16 +45,30 @@ export function DocumentaryCard({
         🎞️
       </div>
       <div className="min-w-0 flex-1 py-0.5">
-        <div className="mb-1.5 flex flex-wrap gap-1">
-          <span
-            className="inline-block rounded-lg px-2 py-0.5 text-[10px] font-bold text-white"
-            style={{ background: PLATFORM_BG[platform] }}
-          >
-            {PLATFORM_LABEL[platform]}
-          </span>
-          <span className="inline-block rounded-lg bg-ink-soft px-2 py-0.5 text-[10px] font-bold text-white">
-            {languageBadge}
-          </span>
+        <div className="mb-1.5 flex items-start justify-between gap-2">
+          <div className="flex flex-wrap gap-1">
+            <span
+              className="inline-block rounded-lg px-2 py-0.5 text-[10px] font-bold text-white"
+              style={{ background: PLATFORM_BG[platform] }}
+            >
+              {PLATFORM_LABEL[platform]}
+            </span>
+            <span className="inline-block rounded-lg bg-ink-soft px-2 py-0.5 text-[10px] font-bold text-white">
+              {languageBadge}
+            </span>
+          </div>
+          <BookmarkButton
+            tone="plain"
+            item={{
+              kind: "documentary",
+              itemId: id,
+              title,
+              subtitle: `${channelOrStudio} · ${durationLabel}`,
+              href: externalUrl,
+              emoji: "🎬",
+              badge: "وثائقي",
+            }}
+          />
         </div>
         <h4 className="mb-1 line-clamp-2 text-[15px] font-bold leading-6 text-ink">{title}</h4>
         <p className="mb-1 text-[11.5px] italic text-ink-soft">

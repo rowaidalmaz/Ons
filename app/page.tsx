@@ -81,6 +81,7 @@ export default async function LearnPage({
         {content?.map((item) => (
           <ContentCard
             key={item.id}
+            id={item.id}
             title={item.title}
             description={item.description}
             icon={item.icon}

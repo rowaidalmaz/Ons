@@ -1,4 +1,5 @@
 import type { ContentFormat } from "@/lib/supabase/types";
+import { BookmarkButton } from "@/components/bookmarks/BookmarkButton";
 
 const THUMB_GRADIENT: Record<ContentFormat, string> = {
   article: "linear-gradient(135deg, var(--sage), #0a7d54)",
@@ -13,6 +14,7 @@ const FORMAT_LABEL: Record<ContentFormat, string> = {
 };
 
 export function ContentCard({
+  id,
   title,
   description,
   icon,
@@ -21,6 +23,7 @@ export function ContentCard({
   authorName,
   channelName,
 }: {
+  id: string;
   title: string;
   description: string;
   icon: string | null;
@@ -30,6 +33,7 @@ export function ContentCard({
   channelName: string;
 }) {
   const initial = authorName.replace("د. ", "").charAt(0);
+  const byline = [authorName, channelName && `في ${channelName}`].filter(Boolean).join(" · ");
 
   return (
     <article className="group flex h-full flex-col rounded-2xl p-2 transition-colors hover:bg-tint">
@@ -40,6 +44,17 @@ export function ContentCard({
         <span className="absolute end-3 top-3 rounded-md bg-black/30 px-2 py-0.5 text-[11px] font-medium text-white backdrop-blur-sm">
           {durationLabel}
         </span>
+        <BookmarkButton
+          className="absolute start-3 top-3"
+          item={{
+            kind: "content",
+            itemId: id,
+            title,
+            subtitle: byline || null,
+            emoji: icon,
+            badge: FORMAT_LABEL[format],
+          }}
+        />
         {icon}
       </div>
       <div className="flex flex-1 flex-col px-1.5 pb-1.5 pt-3">
