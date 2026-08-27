@@ -43,11 +43,34 @@ body {
   padding: 0;
 }
 
+html {
+  /* let every page scroll the document, and clear the sticky header when a
+   * jump (anchor link, scroll restoration) lands on something near the top */
+  scroll-behavior: smooth;
+  scroll-padding-top: 88px;
+}
+@media (min-width: 1024px) {
+  html {
+    scroll-padding-top: 104px;
+  }
+}
+
 body {
+  min-height: 100%;
   background: var(--paper);
   color: var(--charcoal);
   font-family: var(--font-arabic), "IBM Plex Sans Arabic", sans-serif;
   -webkit-font-smoothing: antialiased;
+  overscroll-behavior-y: none;
+}
+
+/* horizontal strips (nav, chip rows) — swipe/drag to scroll, no visible bar */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
 /* accessibility floor: visible focus, respect reduced motion */
@@ -59,6 +82,9 @@ a:focus-visible {
   outline-offset: 2px;
 }
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
   * {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;

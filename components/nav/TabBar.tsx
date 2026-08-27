@@ -14,7 +14,7 @@ export function TabBar() {
   const pathname = usePathname();
 
   return (
-    <nav className="-mx-1 flex flex-1 items-center gap-1 overflow-x-auto">
+    <nav className="no-scrollbar -mx-1 flex flex-1 items-center gap-1 overflow-x-auto">
       {TABS.map((tab) => {
         const active = pathname === tab.href;
         return (

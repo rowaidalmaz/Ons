@@ -18,7 +18,7 @@ export function ChipRow({
   accent?: boolean;
 }) {
   return (
-    <div className="mb-6 flex gap-2 overflow-x-auto pb-1">
+    <div className="no-scrollbar mb-6 flex gap-2 overflow-x-auto pb-1">
       <Chip href={`/?section=${section}`} label="الكل" active={!activeTag} accent={accent} />
       {tags.map((tag) => (
         <Chip
