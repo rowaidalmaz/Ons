@@ -2,8 +2,10 @@
  * Seeds a fresh Supabase database with content matching reference/manara.html
  * exactly. Run after migrations: `npm run db:seed` (see package.json).
  */
-import "dotenv/config";
+import { config } from "dotenv";
 import { createClient } from "@supabase/supabase-js";
+
+config({ path: ".env.local" });
 import {
   LEARN,
   LEARN_TAG_SLUG,
